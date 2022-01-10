@@ -14,14 +14,17 @@ public class Player extends Entity {
         super(posX, posY, vX, vY, frameWidth, frameHeight);
         this.setBitmap(bitmap);
 
-        for (int j = 0; j < 11; j++) {
-            Rect rect = new Rect(j * this.getFrameWidth(), 7 * this.getFrameHeight(),
+        for (int j = 0; j < 8; j++) {
+            Rect rect = new Rect(j * this.getFrameWidth(), this.getFrameHeight(),
                     j * this.getFrameWidth() + this.getFrameWidth(),
-                    7 * this.getFrameHeight() + this.getFrameHeight());
+                    2* this.getFrameHeight());
 
             this.addFrame(rect);
+
         }
-    }
+        this.setFrameTime(1000);
+        }
+
 
     public void update(int ms, int str, int agl) {
         super.update(ms);

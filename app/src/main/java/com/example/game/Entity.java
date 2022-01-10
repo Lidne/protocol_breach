@@ -150,7 +150,7 @@ public class Entity {
         Paint p = new Paint();
         Rect destination = new Rect((int) this.posX, (int) this.posY, (int) (this.posX + this.frameWidth), (int) (this.posY + this.frameHeight));
         p.setColor(Color.RED);
-        canvas.drawRect(destination, p);
+       // canvas.drawRect(destination, p);
         canvas.drawBitmap(bitmap, frames.get(currentFrame), destination, p);
     }
 

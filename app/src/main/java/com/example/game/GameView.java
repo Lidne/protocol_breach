@@ -66,7 +66,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         public DrawThread(Context context, SurfaceHolder surfaceHolder) {
             Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_knight); // загружаем картинку с фреймами
-            player = new Player(100, 200, 200, 50, 223, 111, bitmap); // создаём героя
+
+            int w = bitmap.getWidth()/28;
+            int h = bitmap.getHeight()/13;
+            player = new Player(100, 200, 200, 0, w, h, bitmap); // создаём героя
 
             this.surfaceHolder = surfaceHolder;
 
