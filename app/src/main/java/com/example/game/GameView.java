@@ -15,6 +15,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import io.github.controlwear.virtual.joystick.android.JoystickView;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
     private final int timerInterval = 30;

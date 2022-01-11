@@ -13,6 +13,9 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 public class MainActivity extends Activity {
     public static int angle;
     public static int strength;
+    public static boolean walking;
+    public static boolean attacking;
+    //public static boolean
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class MainActivity extends Activity {
                 MainActivity.strength = strength;
                 Angle.setText(angle + "°");
                 Strength.setText(strength + "%");
+                MainActivity.walking = (strength >= 30);
             }
         };
         Log.d("MY_TAG", "onCreate: " + joystickLeft);
@@ -42,17 +46,4 @@ public class MainActivity extends Activity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(UI_OPTIONS);
     }
-
-    /*private void hideSystemUI() {
-        View mDecorView = getWindow().getDecorView();
-        mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE);
-    }*/
-
-
 }

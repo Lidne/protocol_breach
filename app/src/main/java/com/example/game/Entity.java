@@ -13,12 +13,12 @@ import java.util.List;
 
 public class Entity {
     protected float posX; // позиция по x
-    private float posY;  // позиция по y
-    private float vX = 0; // скорость по x
-    private float vY = 0; // скорость по у
+    protected float posY;  // позиция по y
+    protected float vX = 0; // скорость по x
+    protected float vY = 0; // скорость по у
 
-    private Bitmap bitmap; // изображение с фреймами
-    private List<Rect> frames; // список фреймов анимации
+    protected Bitmap bitmap; // изображение с фреймами
+    protected List<Rect> frames; // список фреймов анимации
 
     private int frameWidth;
     private int frameHeight;
@@ -145,18 +145,6 @@ public class Entity {
             timeForCurrentFrame = timeForCurrentFrame - frameTime;
         }
     }
-
-    public void draw(Canvas canvas) { // прорисовка на SurfaceView
-        Paint p = new Paint();
-        Rect destination = new Rect((int) this.posX, (int) this.posY, (int) (this.posX + this.frameWidth), (int) (this.posY + this.frameHeight));
-        p.setColor(Color.RED);
-       // canvas.drawRect(destination, p);
-        canvas.drawBitmap(bitmap, frames.get(currentFrame), destination, p);
-    }
-
-    public void addFrame(Rect frame) {
-        frames.add(frame);
-    } // добавление фрейма
 
     public Rect getBoundingBoxRect() {
         return new Rect((int) posX + padding, (int) posY + padding, (int) (posX + frameWidth - 2 * padding),
