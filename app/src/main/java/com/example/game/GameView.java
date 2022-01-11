@@ -37,6 +37,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         player = new Player(100, 200, 200, 0, w, h, bitmap); // создаём героя
 
+        getHolder().addCallback(this);
     }
 
 
