@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Entity {
-    protected float posX; // позиция по x
-    private float posY;  // позиция по y
-    private float vX = 0; // скорость по x
-    private float vY = 0; // скорость по у
+    protected int posX; // позиция по x
+    private int posY;  // позиция по y
+    private int vX = 0; // скорость по x
+    private int vY = 0; // скорость по у
 
     private Bitmap bitmap; // изображение с фреймами
     private List<Rect> frames; // список фреймов анимации
@@ -27,7 +27,7 @@ public class Entity {
     private double timeForCurrentFrame; // время с последней смены кадра
     private int padding; // отступы от краёв (хз зачем, а удалять боюсь)
 
-    public Entity(float posX, float posY, float vX, float vY, int frameWidth, int frameHeight) {
+    public Entity(int posX, int posY, int vX, int vY, int frameWidth, int frameHeight) {
         this.posX = posX;
         this.posY = posY;
         this.vX = vX;
@@ -40,11 +40,11 @@ public class Entity {
         this.frameHeight = frameHeight;
     }
 
-    public void setX(float posX) {
+    public void setX(int posX) {
         this.posX = posX;
     }
 
-    public void setY(float posY) {
+    public void setY(int posY) {
         this.posY = posY;
     }
 
@@ -64,11 +64,11 @@ public class Entity {
         return vY;
     }
 
-    public void setVX(float vX) {
+    public void setVX(int vX) {
         this.vX = vX;
     }
 
-    public void setVY(float vY) {
+    public void setVY(int vY) {
         this.vY = vY;
     }
 

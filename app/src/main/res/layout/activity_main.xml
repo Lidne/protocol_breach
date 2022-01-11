@@ -9,8 +9,7 @@
     <com.example.game.GameView
         android:id="@+id/gameView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.example.game.GameView>
+        android:layout_height="match_parent"></com.example.game.GameView>
 
     <io.github.controlwear.virtual.joystick.android.JoystickView
         android:id="@+id/joystickView_left"
@@ -42,5 +41,18 @@
         android:layout_below="@+id/textView_angle"
         android:padding="16dp"
         android:text="0%" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="82dp"
+        android:layout_marginTop="82dp"
+        android:layout_marginEnd="82dp"
+        android:layout_marginBottom="64dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
 
 </RelativeLayout>

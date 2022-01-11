@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
@@ -41,7 +42,19 @@ public class MainActivity extends Activity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(UI_OPTIONS);
+        Button btn = (Button) findViewById(R.id.button);
+        View.OnClickListener listener1 = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("my tag","bebraaaaa auuuuue");
+
+            }
+
+        };
+        btn.setOnClickListener(listener1);
+
     }
+
 
     /*private void hideSystemUI() {
         View mDecorView = getWindow().getDecorView();

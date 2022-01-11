@@ -14,24 +14,31 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
     private final int timerInterval = 30;
     private Player player;
 
+
     public GameView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_knight); // загружаем картинку с фреймами
 
-        int w = bitmap.getWidth()/28;
-        int h = bitmap.getHeight()/13;
+        int w = bitmap.getWidth() / 28;
+        int h = bitmap.getHeight() / 13;
 
         player = new Player(100, 200, 200, 0, w, h, bitmap); // создаём героя
 
-        getHolder().addCallback(this);
     }
+
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -65,4 +72,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
 }
+
