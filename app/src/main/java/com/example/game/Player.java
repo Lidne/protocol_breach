@@ -49,6 +49,12 @@ public class Player extends Entity {
 
     public void update(int ms, int str, int agl) {
         super.update(ms);
+        if (this.getTimeForCurrentFrame() >= this.getFrameTime()) {
+            if (this.isWalking()) this.setCurrentFrame((this.getCurrentFrame() + 1) % walkingFrames.size());
+            if (this.isAttacking()) this.setCurrentFrame((this.getCurrentFrame() + 1) % attackFrames.size());
+            this.setTimeForCurrentFrame(this.getTimeForCurrentFrame() - this.getFrameTime());
+        }
+
         if (str > 30) { // если сила наклона меньше 20, то не двигаем перса
             switch (agl) {
                 case 0:
@@ -62,8 +68,17 @@ public class Player extends Entity {
         // если сменилось состояние, то обнуляем кадр, потому что кол-во кадров в анимациях разное
         if (this.isWalking() != MainActivity.walking) this.setCurrentFrame(0);
         this.setWalking(MainActivity.walking); // обновляем состояние
-        if (this.isAttacking() != MainActivity.attacking) this.setCurrentFrame(0);
-        this.setAttacking(MainActivity.attacking);
+        Log.d("TAG", this.getCurrentFrame() + " " + this.attackFrames.size());
+        if (this.getCurrentFrame() == this.attackFrames.size() - 1) {
+            this.setAttacking(false);
+            MainActivity.attacking = false;
+            this.setCurrentFrame(0);
+            Log.d("TAG", "some");
+        } else {
+            if (this.isAttacking() != MainActivity.attacking) this.setCurrentFrame(0);
+            this.setAttacking(MainActivity.attacking);
+            Log.d("TAG", "some123");
+        }
     }
 
     private void setDefaultFrames() {
@@ -103,6 +118,8 @@ public class Player extends Entity {
         Rect destination = new Rect((int) posX, (int) posY, (int) (posX + getFrameWidth()), (int) (posY + getFrameHeight()));
         if (this.is_walking)
             canvas.drawBitmap(bitmap, walkingFrames.get(getCurrentFrame()), destination, p);
+        else if (this.is_attacking)
+            canvas.drawBitmap(bitmap, attackFrames.get(getCurrentFrame()), destination, p);
         else canvas.drawBitmap(bitmap, frames.get(getCurrentFrame()), destination, p);
     }
 

@@ -128,6 +128,8 @@ public class Entity {
         this.padding = padding;
     }
 
+
+
     public Bitmap getBitmap() {
         return bitmap;
     }
@@ -137,13 +139,7 @@ public class Entity {
     }
 
     public void update(int ms) {  // обновление кадра анимации
-
         timeForCurrentFrame += ms;
-
-        if (timeForCurrentFrame >= frameTime) {
-            currentFrame = (currentFrame + 1) % frames.size();
-            timeForCurrentFrame = timeForCurrentFrame - frameTime;
-        }
     }
 
     public Rect getBoundingBoxRect() {

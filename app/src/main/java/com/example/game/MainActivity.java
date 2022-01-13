@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
@@ -24,10 +25,11 @@ public class MainActivity extends Activity {
 
         TextView Angle = (TextView) findViewById(R.id.textView_angle);
         TextView Strength = (TextView) findViewById(R.id.textView_strength);
+        Button btn = (Button) findViewById(R.id.btn);
 
         JoystickView joystickLeft = (JoystickView) findViewById(R.id.joystickView_left);
         joystickLeft.setButtonDirection(-1);
-        JoystickView.OnMoveListener listener = new JoystickView.OnMoveListener() {
+        JoystickView.OnMoveListener listener_j = new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
                 MainActivity.angle = angle;
@@ -37,8 +39,16 @@ public class MainActivity extends Activity {
                 MainActivity.walking = (strength >= 30);
             }
         };
-        Log.d("MY_TAG", "onCreate: " + joystickLeft);
-        joystickLeft.setOnMoveListener(listener);
+        joystickLeft.setOnMoveListener(listener_j);
+
+        View.OnClickListener listener_btn = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.attacking = true;
+                Log.d("TAG", "onClick: " + MainActivity.attacking);
+            }
+        };
+        btn.setOnClickListener(listener_btn);
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         int UI_OPTIONS = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
