@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import io.github.controlwear.virtual.joystick.android.JoystickView;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
     private final int timerInterval = 30;

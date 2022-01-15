@@ -44,7 +44,7 @@ public class DrawThread extends Thread {
             if (canvas != null) {
                 try {
                     synchronized (view.getHolder()) {
-                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR); // очищаем экран
                         player.draw(canvas);
                         update();
                     }
