@@ -4,7 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/playg/AndroidStudioProjects/protocol_breach/app/src/main/res/layout/activity_main.xml" value="0.1721014492753623" />
-        <entry key="..\:/Users/yarik/AndroidStudioProjects/protocol_breach/app/src/main/res/layout/activity_main.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/yarik/AndroidStudioProjects/protocol_breach/app/src/main/res/drawable/button_stroke_black95_press_white.xml" value="0.23125" />
+        <entry key="..\:/Users/yarik/AndroidStudioProjects/protocol_breach/app/src/main/res/drawable/style_btn_stroke_black95.xml" value="0.2203125" />
+        <entry key="..\:/Users/yarik/AndroidStudioProjects/protocol_breach/app/src/main/res/drawable/style_btn_stroke_black95_press_white.xml" value="0.23125" />
+        <entry key="..\:/Users/yarik/AndroidStudioProjects/protocol_breach/app/src/main/res/layout/activity_main.xml" value="0.15" />
+        <entry key="..\:/Users/yarik/AndroidStudioProjects/protocol_breach/app/src/main/res/layout/game.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/yarik/AndroidStudioProjects/protocol_breach/app/src/main/res/layout/menu.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>

@@ -6,52 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.example.game.GameView
-        android:id="@+id/gameView"
+
+    <ImageView
+        android:id="@+id/main_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.example.game.GameView>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/i" />
 
-    <io.github.controlwear.virtual.joystick.android.JoystickView
-        android:id="@+id/joystickView_left"
-        android:layout_width="165dp"
-        android:layout_height="165dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/joystick_background"
-        android:padding="16dp"
-        app:JV_buttonImage="@drawable/pink_ball"
-        app:JV_fixedCenter="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/textView_angle"
+    <LinearLayout
+        android:id="@+id/startLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="0°" />
-
-    <TextView
-        android:id="@+id/textView_strength"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_angle"
-        android:padding="16dp"
-        android:text="0%" />
-
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"/>
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
 
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/button_stroke_black95_press_white"
+            android:minHeight="48dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/start"
+            android:textColor="@color/black95"
+            android:textSize="24sp" />
+    </LinearLayout>
 </RelativeLayout>

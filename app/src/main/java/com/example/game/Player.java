@@ -51,15 +51,15 @@ public class Player extends Entity {
         super.update(ms);
 
         // если сменилось состояние, то обнуляем кадр, потому что кол-во кадров в анимациях разное
-        if (this.is_walking != MainActivity.walking && !is_attacking) {
+        if (this.is_walking != Game.walking && !is_attacking) {
             this.setCurrentFrame(0);
         }
-        if (this.is_attacking != MainActivity.attacking) {
+        if (this.is_attacking != Game.attacking) {
             this.setCurrentFrame(0);
         }
 
-        if (!is_attacking) is_walking = MainActivity.walking;
-        is_attacking = MainActivity.attacking;
+        if (!is_attacking) is_walking = Game.walking;
+        is_attacking = Game.attacking;
 
         if (is_walking && is_attacking) {
             is_walking = false;
@@ -68,7 +68,7 @@ public class Player extends Entity {
         if (this.getCurrentFrame() == this.attackFrames.size() - 1) {
             this.setCurrentFrame(0);
             this.is_attacking = false;
-            MainActivity.attacking = false;
+            Game.attacking = false;
         }
 
         if (this.getTimeForCurrentFrame() >= this.getFrameTime()) {

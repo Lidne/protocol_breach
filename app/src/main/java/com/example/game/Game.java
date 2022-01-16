@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
-public class MainActivity extends Activity {
+public class Game extends Activity {
     public static int angle;
     public static int strength;
     public static boolean walking;
@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // запускаем игру
+        setContentView(R.layout.game); // запускаем игру
 
         TextView Angle = (TextView) findViewById(R.id.textView_angle);
         TextView Strength = (TextView) findViewById(R.id.textView_strength);
@@ -32,11 +32,11 @@ public class MainActivity extends Activity {
         JoystickView.OnMoveListener listener_j = new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
-                MainActivity.angle = angle;
-                MainActivity.strength = strength;
+                Game.angle = angle;
+                Game.strength = strength;
                 Angle.setText(angle + "°");
                 Strength.setText(strength + "%");
-                MainActivity.walking = (strength >= 30);
+                Game.walking = (strength >= 30);
             }
         };
         joystickLeft.setOnMoveListener(listener_j);
@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
         View.OnClickListener listener_btn = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.attacking = true;
+                Game.attacking = true;
             }
         };
         btn.setOnClickListener(listener_btn);

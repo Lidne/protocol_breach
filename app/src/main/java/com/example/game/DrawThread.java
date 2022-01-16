@@ -71,6 +71,6 @@ public class DrawThread extends Thread {
     }*/
 
     protected void update() {
-        player.update(timerInterval, MainActivity.strength, MainActivity.angle);
+        player.update(timerInterval, Game.strength, Game.angle);
     }
 }
