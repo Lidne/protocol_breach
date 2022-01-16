@@ -1,13 +1,13 @@
 package com.example.game;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.hardware.lights.LightState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Enemy extends Entity {
+public abstract class Enemy extends Entity {
     protected int hp;
     protected int atk;
 
@@ -21,10 +21,18 @@ public class Enemy extends Entity {
     public Enemy(int posX, int posY, int vX, int vY, int frameWidth, int frameHeight, Bitmap bitmap) {
         super(posX, posY, vX, vY, frameWidth, frameHeight);
         this.setBitmap(bitmap);
+        this.attackFrames = new ArrayList<Rect>();
+        this.walkingFrames = new ArrayList<Rect>();
     }
+
+    public abstract void draw(Canvas canvas);
 
     public int getHp() {
         return hp;
+    }
+
+    public boolean isAlive() {
+        return hp > 0;
     }
 
     public void setHp(int hp) {

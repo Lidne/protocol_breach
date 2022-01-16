@@ -1,12 +1,7 @@
 package com.example.game;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +34,8 @@ public class Entity {
         this.currentFrame = 0;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
+
+        this.frameTime = 1000;
     }
 
     public void setX(int posX) {
@@ -149,12 +146,35 @@ public class Entity {
         timeForCurrentFrame += ms;
     }
 
-    public Rect getBoundingBoxRect() {
+    public Rect getHitBoxRect() {
         return new Rect((int) posX + padding, (int) posY + padding, (int) (posX + frameWidth - 2 * padding),
                 (int) (posY + frameHeight - 2 * padding));
     }
 
     public boolean intersect(Entity s) {
-        return getBoundingBoxRect().intersect(s.getBoundingBoxRect());
+        return getHitBoxRect().intersect(s.getHitBoxRect());
     }
+
+    public boolean attacked(Rect atk) {
+        return getHitBoxRect().intersect(atk);
+    }
+
+    /*private void tickUpdate() {
+        // функция, которая выполняется по таймеру
+    }
+
+    class Timer extends CountDownTimer {
+        public Timer(long countDownInterval) {
+            super(Integer.MAX_VALUE, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            tickUpdate();
+        }
+
+        @Override
+        public void onFinish() {
+        }
+    }*/
 }

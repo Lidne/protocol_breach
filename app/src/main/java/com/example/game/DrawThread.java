@@ -16,7 +16,7 @@ public class DrawThread extends Thread {
     private Paint backgroundPaint = new Paint();
     private final int timerInterval = 150;
     private GameView view;
-    private Player player;
+    private Scene scene;
 
     {
         backgroundPaint.setColor(Color.BLACK);
@@ -26,7 +26,7 @@ public class DrawThread extends Thread {
     public DrawThread(Context context, SurfaceHolder surfaceHolder, GameView view) {
         this.surfaceHolder = surfaceHolder;
         this.view = view;
-        this.player = view.getPlayer();
+        this.scene = view.getScene();
 
         // таймер для отрисовки нового кадра анимации
         //Timer t = new Timer();
@@ -45,8 +45,8 @@ public class DrawThread extends Thread {
                 try {
                     synchronized (view.getHolder()) {
                         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR); // очищаем экран
-                        player.draw(canvas);
-                        update();
+                        scene.draw(canvas);
+                        scene.update(timerInterval);
                     }
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);
@@ -69,8 +69,4 @@ public class DrawThread extends Thread {
         public void onFinish() {
         }
     }*/
-
-    protected void update() {
-        player.update(timerInterval, MainActivity.strength, MainActivity.angle);
-    }
 }

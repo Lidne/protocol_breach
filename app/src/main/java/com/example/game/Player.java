@@ -3,6 +3,7 @@ package com.example.game;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
@@ -13,6 +14,7 @@ import java.util.List;
 public class Player extends Entity {
     private int hp;
     private boolean is_walking;
+    private Rect atkRect;
     private int atk_d; // урон от первой атаки в комбо
     private int atk_d1; // урон от второй атаки
     private boolean is_dashing; // состояние уклонения
@@ -29,6 +31,9 @@ public class Player extends Entity {
         this.setBitmap(bitmap);
         this.hp = 100;
         is_walking = false;
+        this.atkRect = new Rect(posX + (this.getFrameWidth() / 2), posY + (this.getFrameHeight() / 2),
+                posX + (this.getFrameWidth() / 4 * 3),
+                posY + (this.getFrameHeight()));
         this.atk_d = 20;
         this.atk_d1 = 40;
         this.dash_r = 100;
@@ -38,8 +43,7 @@ public class Player extends Entity {
         is_attacking = false;
         is_defending = false;
         is_dashing = false;
-
-        this.setFrameTime(1000);
+        this.setPadding(50);
 
         // добавляем фреймы в их списки
         setDefaultFrames();
@@ -73,30 +77,40 @@ public class Player extends Entity {
 
         if (this.getTimeForCurrentFrame() >= this.getFrameTime()) {
             if (is_walking) {
-                Log.d("WALKING", "update");
+                //Log.d("ACTION", "WALKING");
                 this.setCurrentFrame((this.getCurrentFrame() + 1) % walkingFrames.size());
             } else if (is_attacking) {
-                Log.d("ATTACKING", "update");
+                //Log.d("ACTION", "ATTACKING");
                 this.setCurrentFrame((this.getCurrentFrame() + 1) % attackFrames.size());
             } else {
-                Log.d("STANDING", "update");
+                //Log.d("ACTION", "STANDING");
                 this.setCurrentFrame((this.getCurrentFrame() + 1) % frames.size());
             }
 
             this.setTimeForCurrentFrame(this.getTimeForCurrentFrame() - this.getFrameTime());
         }
+        // заготовка для столкновения юнитов
+        //if (!colliding) {
+        move(str, agl);
+        //}
+    }
 
+    private void move(int str, int agl) {
         if (str > 30 && is_walking) { // если сила наклона меньше 20, то не двигаем перса
             switch (agl) {
                 case 0:
                     this.setDirection(0);
-                    this.setX((int) (this.getX() + (this.getVX() * (str / 100.0)) / 60.0));
+                    this.posX = (int) (this.posX + (this.vX * (str / 100.0)) / 60.0);
+
                     break;
                 case 180:
                     this.setDirection(1);
                     this.setX((int) (this.getX() - (this.getVX() * (str / 100.0)) / 60.0));
                     break;
             }
+            this.atkRect.set(posX + (this.getFrameWidth() / 2), posY + (this.getFrameHeight() / 2),
+                    posX + (this.getFrameWidth() / 4 * 3),
+                    posY + (this.getFrameHeight()));
         }
     }
 
@@ -134,12 +148,14 @@ public class Player extends Entity {
     public void draw(Canvas canvas) {
         // прорисовка на SurfaceView
         Paint p = new Paint();
+        p.setColor(Color.RED);
+        canvas.drawRect(this.atkRect, p);
         Rect destination = new Rect((int) posX, (int) posY, (int) (posX + getFrameWidth()), (int) (posY + getFrameHeight()));
-        if (is_walking)
+        if (is_walking) {
             canvas.drawBitmap(bitmap, walkingFrames.get(getCurrentFrame()), destination, p);
-        else if (is_attacking)
+        } else if (is_attacking) {
             canvas.drawBitmap(bitmap, attackFrames.get(getCurrentFrame()), destination, p);
-        else canvas.drawBitmap(bitmap, frames.get(getCurrentFrame()), destination, p);
+        } else canvas.drawBitmap(bitmap, frames.get(getCurrentFrame()), destination, p);
     }
 
     public int getHp() {
@@ -148,6 +164,14 @@ public class Player extends Entity {
 
     public void setHp(int hp) {
         this.hp = hp;
+    }
+
+    public Rect getAtkRect() {
+        return atkRect;
+    }
+
+    public void setAtkRect(Rect atkRect) {
+        this.atkRect = atkRect;
     }
 
     public int getAtk_d() {

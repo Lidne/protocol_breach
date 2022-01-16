@@ -26,19 +26,13 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
     private final int timerInterval = 30;
-    private Player player;
+    private Scene scene;
 
 
     public GameView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_knight); // загружаем картинку с фреймами
-
-        int w = bitmap.getWidth() / 28;
-        int h = bitmap.getHeight() / 13;
-
-        player = new Player(100, 200, 200, 0, w, h, bitmap); // создаём героя
-        int some = player.posY;
+        scene = new Scene(context);
 
         getHolder().addCallback(this);
     }
@@ -69,13 +63,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public Player getPlayer() {
-        return player;
+    public Scene getScene() {
+        return scene;
     }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
 }
 
