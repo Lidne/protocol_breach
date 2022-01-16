@@ -12,14 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Entity {
-    protected float posX; // позиция по x
-    protected float posY;  // позиция по y
-    protected float vX = 0; // скорость по x
-    protected float vY = 0; // скорость по у
+    protected int posX; // позиция по x
+    protected int posY;  // позиция по y
+    protected int vX = 0; // скорость по x
+    protected int vY = 0; // скорость по у
 
     protected Bitmap bitmap; // изображение с фреймами
     protected List<Rect> frames; // список фреймов анимации
 
+    private int direction;
     private int frameWidth;
     private int frameHeight;
     private int currentFrame; // номер текущего кадра
@@ -70,6 +71,14 @@ public class Entity {
 
     public void setVY(int vY) {
         this.vY = vY;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 
     public List<Rect> getFrames() {

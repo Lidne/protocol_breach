@@ -45,7 +45,6 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 MainActivity.attacking = true;
-                Log.d("TAG", "onClick: " + MainActivity.attacking);
             }
         };
         btn.setOnClickListener(listener_btn);

@@ -14,7 +14,7 @@ public class DrawThread extends Thread {
 
     private volatile boolean running = true; //флаг для остановки потока
     private Paint backgroundPaint = new Paint();
-    private final int timerInterval = 100;
+    private final int timerInterval = 150;
     private GameView view;
     private Player player;
 
@@ -29,8 +29,8 @@ public class DrawThread extends Thread {
         this.player = view.getPlayer();
 
         // таймер для отрисовки нового кадра анимации
-        Timer t = new Timer();
-        t.start();
+        //Timer t = new Timer();
+        //t.start();
     }
 
     public void requestStop() {
@@ -55,7 +55,7 @@ public class DrawThread extends Thread {
         }
     }
 
-    class Timer extends CountDownTimer {
+    /*class Timer extends CountDownTimer {
         public Timer() {
             super(Integer.MAX_VALUE, timerInterval);
         }
@@ -68,7 +68,7 @@ public class DrawThread extends Thread {
         @Override
         public void onFinish() {
         }
-    }
+    }*/
 
     protected void update() {
         player.update(timerInterval, MainActivity.strength, MainActivity.angle);

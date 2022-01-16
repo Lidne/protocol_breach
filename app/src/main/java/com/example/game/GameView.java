@@ -38,6 +38,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         int h = bitmap.getHeight() / 13;
 
         player = new Player(100, 200, 200, 0, w, h, bitmap); // создаём героя
+        int some = player.posY;
 
         getHolder().addCallback(this);
     }

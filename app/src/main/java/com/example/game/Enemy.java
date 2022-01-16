@@ -8,25 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Enemy extends Entity {
-    private int hp;
-    private int atk;
+    protected int hp;
+    protected int atk;
 
-    private List<Rect> attackFrames;
-    private List<Rect> walkingFrames;
+    protected List<Rect> attackFrames;
+    protected List<Rect> walkingFrames;
 
-    private boolean is_attacking;
-    private int stamina; //
+    protected boolean is_walking;
+    protected boolean is_attacking;
+    protected int stamina; //
 
-    public Enemy(float posX, float posY, float vX, float vY, int frameWidth, int frameHeight, Bitmap bitmap) {
+    public Enemy(int posX, int posY, int vX, int vY, int frameWidth, int frameHeight, Bitmap bitmap) {
         super(posX, posY, vX, vY, frameWidth, frameHeight);
         this.setBitmap(bitmap);
-
-        this.hp = 100;
-        this.atk = 30;
-        this.walkingFrames = new ArrayList<Rect>();
-        this.attackFrames = new ArrayList<Rect>();
-        this.is_attacking = false;
-        this.stamina = 100;
     }
 
     public int getHp() {

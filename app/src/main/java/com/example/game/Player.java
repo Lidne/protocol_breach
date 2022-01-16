@@ -49,35 +49,54 @@ public class Player extends Entity {
 
     public void update(int ms, int str, int agl) {
         super.update(ms);
+
+        // если сменилось состояние, то обнуляем кадр, потому что кол-во кадров в анимациях разное
+        if (this.is_walking != MainActivity.walking && !is_attacking) {
+            this.setCurrentFrame(0);
+        }
+        if (this.is_attacking != MainActivity.attacking) {
+            this.setCurrentFrame(0);
+        }
+
+        if (!is_attacking) is_walking = MainActivity.walking;
+        is_attacking = MainActivity.attacking;
+
+        if (is_walking && is_attacking) {
+            is_walking = false;
+        }
+
+        if (this.getCurrentFrame() == this.attackFrames.size() - 1) {
+            this.setCurrentFrame(0);
+            this.is_attacking = false;
+            MainActivity.attacking = false;
+        }
+
         if (this.getTimeForCurrentFrame() >= this.getFrameTime()) {
-            if (this.isWalking()) this.setCurrentFrame((this.getCurrentFrame() + 1) % walkingFrames.size());
-            if (this.isAttacking()) this.setCurrentFrame((this.getCurrentFrame() + 1) % attackFrames.size());
+            if (is_walking) {
+                Log.d("WALKING", "update");
+                this.setCurrentFrame((this.getCurrentFrame() + 1) % walkingFrames.size());
+            } else if (is_attacking) {
+                Log.d("ATTACKING", "update");
+                this.setCurrentFrame((this.getCurrentFrame() + 1) % attackFrames.size());
+            } else {
+                Log.d("STANDING", "update");
+                this.setCurrentFrame((this.getCurrentFrame() + 1) % frames.size());
+            }
+
             this.setTimeForCurrentFrame(this.getTimeForCurrentFrame() - this.getFrameTime());
         }
 
-        if (str > 30) { // если сила наклона меньше 20, то не двигаем перса
+        if (str > 30 && is_walking) { // если сила наклона меньше 20, то не двигаем перса
             switch (agl) {
                 case 0:
-                    this.setX((float) (this.getX() + (this.getVX() * (str / 100.0)) / 60.0));
+                    this.setDirection(0);
+                    this.setX((int) (this.getX() + (this.getVX() * (str / 100.0)) / 60.0));
                     break;
                 case 180:
-                    this.setX((float) (this.getX() - (this.getVX() * (str / 100.0)) / 60.0));
+                    this.setDirection(1);
+                    this.setX((int) (this.getX() - (this.getVX() * (str / 100.0)) / 60.0));
                     break;
             }
-        }
-        // если сменилось состояние, то обнуляем кадр, потому что кол-во кадров в анимациях разное
-        if (this.isWalking() != MainActivity.walking) this.setCurrentFrame(0);
-        this.setWalking(MainActivity.walking); // обновляем состояние
-        Log.d("TAG", this.getCurrentFrame() + " " + this.attackFrames.size());
-        if (this.getCurrentFrame() == this.attackFrames.size() - 1) {
-            this.setAttacking(false);
-            MainActivity.attacking = false;
-            this.setCurrentFrame(0);
-            Log.d("TAG", "some");
-        } else {
-            if (this.isAttacking() != MainActivity.attacking) this.setCurrentFrame(0);
-            this.setAttacking(MainActivity.attacking);
-            Log.d("TAG", "some123");
         }
     }
 
@@ -116,9 +135,9 @@ public class Player extends Entity {
         // прорисовка на SurfaceView
         Paint p = new Paint();
         Rect destination = new Rect((int) posX, (int) posY, (int) (posX + getFrameWidth()), (int) (posY + getFrameHeight()));
-        if (this.is_walking)
+        if (is_walking)
             canvas.drawBitmap(bitmap, walkingFrames.get(getCurrentFrame()), destination, p);
-        else if (this.is_attacking)
+        else if (is_attacking)
             canvas.drawBitmap(bitmap, attackFrames.get(getCurrentFrame()), destination, p);
         else canvas.drawBitmap(bitmap, frames.get(getCurrentFrame()), destination, p);
     }
