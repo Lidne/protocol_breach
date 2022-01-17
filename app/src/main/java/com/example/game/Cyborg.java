@@ -91,6 +91,11 @@ public class Cyborg extends Enemy {
         }
     }
 
+    public void resurrect() {
+        this.hp = 100;
+        this.posX += 200;
+    }
+
     private void tickUpdate() {
         Log.d("TAG", "tickUpdate: ");
     }

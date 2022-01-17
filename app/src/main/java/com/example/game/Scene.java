@@ -28,7 +28,9 @@ public class Scene {
     public void draw(Canvas canvas) {
         player.draw(canvas);
         for (Cyborg unit : enemies) {
-            if (unit.isAlive()) unit.draw(canvas);
+            if (!unit.isAlive()) {
+                unit.resurrect();
+            } else unit.draw(canvas);
         }
     }
 
@@ -42,7 +44,7 @@ public class Scene {
             //colliding = colliding || player.intersect(unit);
             //Log.d("TAG", "update: " + colliding);
         }
-        player.update(ms, MainActivity.strength, MainActivity.angle);
+        player.update(ms, Game.strength, Game.angle);
     }
 
     public Player getPlayer() {
