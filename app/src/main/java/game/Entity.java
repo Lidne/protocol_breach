@@ -1,7 +1,12 @@
-package com.example.game;
+package game;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,19 +14,25 @@ import java.util.List;
 public class Entity {
     protected int posX; // позиция по x
     protected int posY;  // позиция по y
-    protected int vX = 0; // скорость по x
-    protected int vY = 0; // скорость по у
+    protected int vX; // скорость по x
+    protected int vY; // скорость по у
 
     protected Bitmap bitmap; // изображение с фреймами
     protected List<Rect> frames; // список фреймов анимации
 
-    private int direction;
-    private int frameWidth;
-    private int frameHeight;
-    private int currentFrame; // номер текущего кадра
-    private double frameTime; // время на 1 кадр
-    private double timeForCurrentFrame; // время с последней смены кадра
-    private int padding; // отступы от краёв (хз зачем, а удалять боюсь)
+    protected boolean isWalking; // состояние ходьбы
+    protected boolean isAttacking; // состояние атаки
+    protected boolean isFalling; // состояние падения (если не касается преграды)
+
+    protected Rect hitBox;
+    protected Rect destination;
+    protected int direction; // направление движения
+    protected int frameWidth; // ширина кадра анимации
+    protected int frameHeight; // высота кадра анимации
+    protected int currentFrame; // номер текущего кадра
+    protected double frameTime; // время на 1 кадр
+    protected double timeForCurrentFrame; // время с последней смены кадра
+    protected int padding; // отступы от краёв фрейма
 
     public Entity(int posX, int posY, int vX, int vY, int frameWidth, int frameHeight) {
         this.posX = posX;
@@ -34,8 +45,9 @@ public class Entity {
         this.currentFrame = 0;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
-
         this.frameTime = 1000;
+        this.destination = new Rect(0, 0, 0, 0);
+        this.hitBox = new Rect(0, 0, 0, 0);
     }
 
     public void setX(int posX) {
@@ -46,19 +58,19 @@ public class Entity {
         this.posY = posY;
     }
 
-    public float getX() {
+    public int getX() {
         return posX;
     }
 
-    public float getY() {
+    public int getY() {
         return posY;
     }
 
-    public float getVX() {
+    public int getVX() {
         return vX;
     }
 
-    public float getVY() {
+    public int getVY() {
         return vY;
     }
 
@@ -76,6 +88,10 @@ public class Entity {
 
     public void setDirection(int direction) {
         this.direction = direction;
+    }
+
+    public void addFrames(Rect frame, List<Rect> frames) {
+        frames.add(frame);
     }
 
     public List<Rect> getFrames() {
@@ -147,8 +163,7 @@ public class Entity {
     }
 
     public Rect getHitBoxRect() {
-        return new Rect((int) posX + padding, (int) posY + padding, (int) (posX + frameWidth - 2 * padding),
-                (int) (posY + frameHeight - 2 * padding));
+        return hitBox;
     }
 
     public boolean intersect(Entity s) {
@@ -157,6 +172,21 @@ public class Entity {
 
     public boolean attacked(Rect atk) {
         return getHitBoxRect().intersect(atk);
+    }
+
+    public void applyGravity(@NonNull List<Floor> floors) {
+        boolean some = true;
+        for (int i = 0; i < floors.size(); i++) {
+            Floor floor = floors.get(i);
+            some = !(getHitBoxRect().intersect(floor.getHitBox()) && floor.isColliding()) && some;
+        }
+        this.isFalling = some;
+        //Log.d("TAG", "applyGravity: " + getHitBoxRect().intersect(floor.getHitBox()));
+    }
+
+    public void applyGravity(@NonNull Floor floor) {
+        isFalling = !(getHitBoxRect().intersect(floor.getHitBox()) && floor.isColliding());
+        //Log.d("TAG", "applyGravity: " + getHitBoxRect().intersect(floor.getHitBox()));
     }
 
     /*private void tickUpdate() {

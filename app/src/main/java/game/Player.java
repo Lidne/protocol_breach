@@ -1,26 +1,27 @@
-package com.example.game;
+package game;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends Entity {
     private int hp;
-    private boolean is_walking;
+    private boolean isWalking;
     private Rect atkRect;
-    private int atk_d; // урон от первой атаки в комбо
-    private int atk_d1; // урон от второй атаки
-    private boolean is_dashing; // состояние уклонения
-    private int dash_r; // дальность дэша в пикселях
-    private boolean is_attacking; // состояние атаки
-    private boolean is_defending; // состояние поднятия щита
+    private int atkDamage; // урон от первой атаки в комбо
+    private int atk1Damage; // урон от второй атаки
+    private boolean isDashing; // состояние уклонения
+    private int dashRadius; // дальность дэша в пикселях
+    private boolean isAttacking; // состояние атаки
+    private boolean isDefending; // состояние поднятия щита
 
     private List<Rect> walkingFrames; // список с анимациями ходьбы
     private List<Rect> attackFrames; // список с анимациями атаки
@@ -30,20 +31,23 @@ public class Player extends Entity {
         super(posX, posY, vX, vY, frameWidth, frameHeight);
         this.setBitmap(bitmap);
         this.hp = 100;
-        is_walking = false;
+        isWalking = false;
         this.atkRect = new Rect(posX + (this.getFrameWidth() / 2), posY + (this.getFrameHeight() / 2),
                 posX + (this.getFrameWidth() / 4 * 3),
                 posY + (this.getFrameHeight()));
-        this.atk_d = 20;
-        this.atk_d1 = 40;
-        this.dash_r = 100;
+        this.atkDamage = 20;
+        this.atk1Damage = 40;
+        this.dashRadius = 100;
         this.walkingFrames = new ArrayList<Rect>();
         this.attackFrames = new ArrayList<Rect>();
+        this.hitBox = new Rect(posX + (frameWidth / 2 - 70), posY + 170, posX + (frameWidth / 2 + 70),
+                posY + frameHeight - 1);
         //this.attack1Frames = new ArrayList<Rect>();
-        is_attacking = false;
-        is_defending = false;
-        is_dashing = false;
-        this.setPadding(50);
+        isAttacking = false;
+        isDefending = false;
+        isDashing = false;
+        isFalling = false;
+        //this.setPadding(100);
 
         // добавляем фреймы в их списки
         setDefaultFrames();
@@ -55,31 +59,31 @@ public class Player extends Entity {
         super.update(ms);
 
         // если сменилось состояние, то обнуляем кадр, потому что кол-во кадров в анимациях разное
-        if (this.is_walking != Game.walking && !is_attacking) {
+        if (this.isWalking != Game.walking && !isAttacking) {
             this.setCurrentFrame(0);
         }
-        if (this.is_attacking != Game.attacking) {
+        if (this.isAttacking != Game.attacking) {
             this.setCurrentFrame(0);
         }
 
-        if (!is_attacking) is_walking = Game.walking;
-        is_attacking = Game.attacking;
+        if (!isAttacking) isWalking = Game.walking;
+        isAttacking = Game.attacking;
 
-        if (is_walking && is_attacking) {
-            is_walking = false;
+        if (isWalking && isAttacking) {
+            isWalking = false;
         }
 
         if (this.getCurrentFrame() == this.attackFrames.size() - 1) {
             this.setCurrentFrame(0);
-            this.is_attacking = false;
+            this.isAttacking = false;
             Game.attacking = false;
         }
 
         if (this.getTimeForCurrentFrame() >= this.getFrameTime()) {
-            if (is_walking) {
+            if (isWalking) {
                 //Log.d("ACTION", "WALKING");
                 this.setCurrentFrame((this.getCurrentFrame() + 1) % walkingFrames.size());
-            } else if (is_attacking) {
+            } else if (isAttacking) {
                 //Log.d("ACTION", "ATTACKING");
                 this.setCurrentFrame((this.getCurrentFrame() + 1) % attackFrames.size());
             } else {
@@ -96,22 +100,29 @@ public class Player extends Entity {
     }
 
     private void move(int str, int agl) {
-        if (str > 30 && is_walking) { // если сила наклона меньше 20, то не двигаем перса
+        if (str > 30 && isWalking) { // если сила наклона меньше 20, то не двигаем перса
             switch (agl) {
                 case 0:
                     this.setDirection(0);
-                    this.posX = (int) (this.posX + (this.vX * (str / 100.0)) / 60.0);
-
+                    this.posX = (this.posX + (this.vX * (str / 100)) / 60);
                     break;
                 case 180:
                     this.setDirection(1);
-                    this.setX((int) (this.getX() - (this.getVX() * (str / 100.0)) / 60.0));
+                    this.posX = (this.posX - (this.vX * (str / 100)) / 60);
                     break;
             }
-            this.atkRect.set(posX + (this.getFrameWidth() / 2), posY + (this.getFrameHeight() / 2),
-                    posX + (this.getFrameWidth() / 4 * 3),
-                    posY + (this.getFrameHeight()));
         }
+
+        if (this.isFalling) {
+            this.posY += this.vY;
+        }
+
+        this.atkRect.set(posX + (this.getFrameWidth() / 2), posY + (this.getFrameHeight() / 2),
+                posX + (this.getFrameWidth() / 4 * 3),
+                posY + this.getFrameHeight());
+        this.destination.set(posX, posY, posX + getFrameWidth(), posY + getFrameHeight());
+        this.hitBox.set(posX + (frameWidth / 2 - 70), posY + 170, posX + (frameWidth / 2 + 70),
+                posY + frameHeight - 1);
     }
 
     private void setDefaultFrames() {
@@ -119,7 +130,7 @@ public class Player extends Entity {
         for (int i = 0; i < 8; i++) {
             Rect rect = new Rect(i * this.getFrameWidth(), 0,
                     i * this.getFrameWidth() + this.getFrameWidth(), this.getFrameHeight());
-            this.frames.add(rect);
+            this.addFrames(rect, frames);
         }
     }
 
@@ -145,17 +156,19 @@ public class Player extends Entity {
         }
     }
 
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas, Paint p) {
         // прорисовка на SurfaceView
-        Paint p = new Paint();
-        p.setColor(Color.RED);
-        canvas.drawRect(this.atkRect, p);
-        Rect destination = new Rect((int) posX, (int) posY, (int) (posX + getFrameWidth()), (int) (posY + getFrameHeight()));
-        if (is_walking) {
-            canvas.drawBitmap(bitmap, walkingFrames.get(getCurrentFrame()), destination, p);
-        } else if (is_attacking) {
-            canvas.drawBitmap(bitmap, attackFrames.get(getCurrentFrame()), destination, p);
-        } else canvas.drawBitmap(bitmap, frames.get(getCurrentFrame()), destination, p);
+        // p.setColor(Color.BLUE);
+        //canvas.drawRect(destination, p);
+        //p.setColor(Color.RED);
+        //canvas.drawRect(this.atkRect, p);
+        p.setColor(Color.GREEN);
+        canvas.drawRect(this.getHitBoxRect(), p);
+        if (isWalking) {
+            canvas.drawBitmap(bitmap, walkingFrames.get(getCurrentFrame()), this.destination, p);
+        } else if (isAttacking) {
+            canvas.drawBitmap(bitmap, attackFrames.get(getCurrentFrame()), this.destination, p);
+        } else canvas.drawBitmap(bitmap, frames.get(getCurrentFrame()), this.destination, p);
     }
 
     public int getHp() {
@@ -174,59 +187,59 @@ public class Player extends Entity {
         this.atkRect = atkRect;
     }
 
-    public int getAtk_d() {
-        return atk_d;
+    public int getAtkDamage() {
+        return atkDamage;
     }
 
-    public void setAtk_d(int atk_d) {
-        this.atk_d = atk_d;
+    public void setAtkDamage(int atkDamage) {
+        this.atkDamage = atkDamage;
     }
 
-    public int getAtk_d1() {
-        return atk_d1;
+    public int getAtk1Damage() {
+        return atk1Damage;
     }
 
-    public void setAtk_d1(int atk_d1) {
-        this.atk_d1 = atk_d1;
+    public void setAtk1Damage(int atk1Damage) {
+        this.atk1Damage = atk1Damage;
     }
 
     public boolean isWalking() {
-        return is_walking;
+        return isWalking;
     }
 
     public void setWalking(boolean is_walking) {
-        this.is_walking = is_walking;
+        this.isWalking = is_walking;
     }
 
     public boolean isDashing() {
-        return is_dashing;
+        return isDashing;
     }
 
     public void setDashing(boolean is_dashing) {
-        this.is_dashing = is_dashing;
+        this.isDashing = is_dashing;
     }
 
-    public int getDash_r() {
-        return dash_r;
+    public int getDashRadius() {
+        return dashRadius;
     }
 
-    public void setDash_r(int dash_r) {
-        this.dash_r = dash_r;
+    public void setDashRadius(int dashRadius) {
+        this.dashRadius = dashRadius;
     }
 
     public boolean isAttacking() {
-        return is_attacking;
+        return isAttacking;
     }
 
     public void setAttacking(boolean is_attacking) {
-        this.is_attacking = is_attacking;
+        this.isAttacking = is_attacking;
     }
 
     public boolean isDefending() {
-        return is_defending;
+        return isDefending;
     }
 
     public void setDefending(boolean is_defending) {
-        this.is_defending = is_defending;
+        this.isDefending = is_defending;
     }
 }

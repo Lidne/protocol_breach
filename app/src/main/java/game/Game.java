@@ -1,13 +1,14 @@
-package com.example.game;
+package game;
 
 import androidx.core.view.WindowCompat;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.game.R;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 

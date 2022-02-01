@@ -1,4 +1,4 @@
-package com.example.game;
+package game;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
+
+import com.example.game.R;
 
 public class MainActivity extends Activity {
     @Override

@@ -1,11 +1,10 @@
-package com.example.game;
+package game;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.os.CountDownTimer;
 import android.view.SurfaceHolder;
 
 public class DrawThread extends Thread {
@@ -16,7 +15,9 @@ public class DrawThread extends Thread {
     private Paint backgroundPaint = new Paint();
     private final int timerInterval = 150;
     private GameView view;
-    private Scene scene;
+    private SurfaceScene surfaceScene;
+
+    private final Paint p = new Paint();
 
     {
         backgroundPaint.setColor(Color.BLACK);
@@ -26,7 +27,7 @@ public class DrawThread extends Thread {
     public DrawThread(Context context, SurfaceHolder surfaceHolder, GameView view) {
         this.surfaceHolder = surfaceHolder;
         this.view = view;
-        this.scene = view.getScene();
+        this.surfaceScene = view.getScene();
 
         // таймер для отрисовки нового кадра анимации
         //Timer t = new Timer();
@@ -45,8 +46,8 @@ public class DrawThread extends Thread {
                 try {
                     synchronized (view.getHolder()) {
                         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR); // очищаем экран
-                        scene.draw(canvas);
-                        scene.update(timerInterval);
+                        surfaceScene.draw(canvas, p);
+                        surfaceScene.update(timerInterval);
                     }
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);
