@@ -17,7 +17,6 @@ public class Game extends Activity {
     public static int strength;
     public static boolean walking;
     public static boolean attacking;
-    //public static boolean
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,16 @@ public class Game extends Activity {
         };
         btn.setOnClickListener(listener_btn);
 
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        int UI_OPTIONS = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+        getWindow().getDecorView().setSystemUiVisibility(UI_OPTIONS);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         int UI_OPTIONS = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY

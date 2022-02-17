@@ -170,8 +170,8 @@ public class Entity {
         return getHitBoxRect().intersect(s.getHitBoxRect());
     }
 
-    public boolean attacked(Rect atk) {
-        return getHitBoxRect().intersect(atk);
+    public boolean intersect(Rect rect) {
+        return getHitBoxRect().intersect(rect);
     }
 
     public void applyGravity(@NonNull List<Floor> floors) {

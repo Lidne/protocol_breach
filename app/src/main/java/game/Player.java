@@ -100,15 +100,15 @@ public class Player extends Entity {
     }
 
     private void move(int str, int agl) {
-        if (str > 30 && isWalking) { // если сила наклона меньше 20, то не двигаем перса
+        if (str >= 30 && isWalking) { // если сила наклона меньше 20, то не двигаем перса
             switch (agl) {
                 case 0:
                     this.setDirection(0);
-                    this.posX = (this.posX + (this.vX * (str / 100)) / 60);
+                    this.posX = (int) (this.posX + (this.vX * (str / 100.0)) / 60.0);
                     break;
                 case 180:
                     this.setDirection(1);
-                    this.posX = (this.posX - (this.vX * (str / 100)) / 60);
+                    this.posX = (int) (this.posX - (this.vX * (str / 100.0)) / 60.0);
                     break;
             }
         }
@@ -160,8 +160,8 @@ public class Player extends Entity {
         // прорисовка на SurfaceView
         // p.setColor(Color.BLUE);
         //canvas.drawRect(destination, p);
-        //p.setColor(Color.RED);
-        //canvas.drawRect(this.atkRect, p);
+        p.setColor(Color.RED);
+        canvas.drawRect(this.atkRect, p);
         p.setColor(Color.GREEN);
         canvas.drawRect(this.getHitBoxRect(), p);
         if (isWalking) {

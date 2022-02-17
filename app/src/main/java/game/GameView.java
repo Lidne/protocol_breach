@@ -2,19 +2,21 @@ package game;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
     private final int timerInterval = 30;
-    private SurfaceScene surfaceScene;
+    private FightScene fightScene;
 
 
     public GameView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        surfaceScene = new SurfaceScene(context);
+
+        fightScene = new FightScene(context);
 
         getHolder().addCallback(this);
     }
@@ -22,8 +24,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+
         drawThread = new DrawThread(getContext(), getHolder(), this);
         drawThread.start();
+        fightScene.setSize(getWidth(), getHeight());
     }
 
     @Override
@@ -45,8 +49,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public SurfaceScene getScene() {
-        return surfaceScene;
+    public FightScene getScene() {
+        return fightScene;
     }
 }
 
