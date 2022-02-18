@@ -16,13 +16,12 @@ public class SurfaceScene implements Scene {
     private Player player;
     private List<Enemy> enemies;
     private List<Floor> floors;
-
     public SurfaceScene(Context context) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_knight); // загружаем картинку с фреймами
         Bitmap bitmap_f = BitmapFactory.decodeResource(context.getResources(), R.drawable.floor_1); // загружаем картинку с фреймами
 
         int w = bitmap.getWidth() / 28;
-        int h = bitmap.getHeight() / 13;
+        int h = bitmap.getHeight() / 26;
         this.enemies = new ArrayList<Enemy>();
         this.floors = new ArrayList<Floor>();
 
@@ -72,6 +71,7 @@ public class SurfaceScene implements Scene {
         }
         player.applyGravity(floors);
         player.update(ms, Game.strength, Game.angle);
+
     }
 
     @Override
@@ -83,4 +83,5 @@ public class SurfaceScene implements Scene {
     public void setPLayer(Player pLayer) {
         this.player = player;
     }
+
 }

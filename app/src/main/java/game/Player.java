@@ -25,6 +25,9 @@ public class Player extends Entity {
 
     private List<Rect> walkingFrames; // список с анимациями ходьбы
     private List<Rect> attackFrames; // список с анимациями атаки
+    private List<Rect> walkingMirrorFrames; // список с анимациями ходьбы
+    private List<Rect> attackMirrorFrames; // список с анимациями атаки
+    private List<Rect> mirrorFrames;
     //private List<Rect> attack1Frames;
 
     public Player(int posX, int posY, int vX, int vY, int frameWidth, int frameHeight, Bitmap bitmap) {
@@ -40,6 +43,9 @@ public class Player extends Entity {
         this.dashRadius = 100;
         this.walkingFrames = new ArrayList<Rect>();
         this.attackFrames = new ArrayList<Rect>();
+        this.walkingMirrorFrames = new ArrayList<Rect>();
+        this.attackMirrorFrames = new ArrayList<Rect>();
+        this.mirrorFrames = new ArrayList<Rect>();
         this.hitBox = new Rect(posX + (frameWidth / 2 - 70), posY + 170, posX + (frameWidth / 2 + 70),
                 posY + frameHeight - 1);
         //this.attack1Frames = new ArrayList<Rect>();
@@ -53,6 +59,10 @@ public class Player extends Entity {
         setDefaultFrames();
         setWalkingFrames();
         setAttackFrames();
+
+        setMirrorFrames();
+        setWalkingMirrorFrames();
+        setAttackMirrorFrames();
     }
 
     public void update(int ms, int str, int agl) {
@@ -156,6 +166,40 @@ public class Player extends Entity {
         }
     }
 
+    private void setMirrorFrames() {
+        // Функция загружает зеркальные кадры ожидания
+        for (int i = 0; i < 8; i++) {
+            Rect rect = new Rect(i * this.getFrameWidth(), 13 * this.getFrameHeight(),
+                    i * this.getFrameWidth() + this.getFrameWidth(),
+                    14 * this.getFrameHeight());
+
+            this.mirrorFrames.add(rect);
+        }
+    }
+
+    private void setAttackMirrorFrames() {
+        // Функция загружает зеркальные кадры атаки
+        for (int i = 0; i < 11; i++) {
+            Rect rect = new Rect(i * this.getFrameWidth(), 19 * this.getFrameHeight(),
+                    i * this.getFrameWidth() + this.getFrameWidth(),
+                    20 * this.getFrameHeight());
+
+            this.attackMirrorFrames.add(rect);
+        }
+    }
+
+    private void setWalkingMirrorFrames() {
+        // Функция загружает зеркальные кадры ходьбы
+        for (int i = 0; i < 8; i++) {
+            Rect rect = new Rect(i * this.getFrameWidth(),  14* this.getFrameHeight(),
+                    i * this.getFrameWidth() + this.getFrameWidth(),
+                    15* this.getFrameHeight());
+
+            this.walkingMirrorFrames.add(rect);
+        }
+    }
+
+
     public void draw(@NonNull Canvas canvas, Paint p) {
         // прорисовка на SurfaceView
         // p.setColor(Color.BLUE);
@@ -165,10 +209,26 @@ public class Player extends Entity {
         p.setColor(Color.GREEN);
         canvas.drawRect(this.getHitBoxRect(), p);
         if (isWalking) {
-            canvas.drawBitmap(bitmap, walkingFrames.get(getCurrentFrame()), this.destination, p);
+            if (direction >0) {
+                canvas.drawBitmap(bitmap, walkingMirrorFrames.get(getCurrentFrame()), this.destination, p);
+            } else  {
+                canvas.drawBitmap(bitmap, walkingFrames.get(getCurrentFrame()), this.destination, p);
+            }
         } else if (isAttacking) {
-            canvas.drawBitmap(bitmap, attackFrames.get(getCurrentFrame()), this.destination, p);
-        } else canvas.drawBitmap(bitmap, frames.get(getCurrentFrame()), this.destination, p);
+            if (direction > 0) {
+                canvas.drawBitmap(bitmap, attackMirrorFrames.get(getCurrentFrame()), this.destination, p);
+            } else  {
+                canvas.drawBitmap(bitmap, attackFrames.get(getCurrentFrame()), this.destination, p);
+            }
+        } else {
+            if (direction > 0) {
+                canvas.drawBitmap(bitmap, mirrorFrames.get(getCurrentFrame()), this.destination, p);
+            } else {
+
+                canvas.drawBitmap(bitmap, frames.get(getCurrentFrame()), this.destination, p);
+
+            }
+        }
     }
 
     public int getHp() {

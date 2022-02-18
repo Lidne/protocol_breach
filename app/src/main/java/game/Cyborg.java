@@ -20,6 +20,8 @@ public class Cyborg extends Enemy {
         this.isWalking = false;
         this.isAttacking = false;
         this.stamina = 3;
+        this.dmg=30;
+        this.attackRange=10;
         this.hitBox = new Rect(posX + (frameWidth / 2 - 70), posY + 170, posX + (frameWidth / 2 + 70),
                 posY + frameHeight - 1);
 
@@ -73,11 +75,25 @@ public class Cyborg extends Enemy {
     public void update(int ms) {
         super.update(ms);
 
+        if (this.isWalking != Game.walking && !isAttacking) {
+            this.setCurrentFrame(0);
+        }
+        if (this.isAttacking != Game.attacking) {
+            this.setCurrentFrame(0);
+        }
+
+        if (!isAttacking) isWalking = Game.walking;
+        isAttacking = Game.attacking;
+
+        if (isWalking && isAttacking) {
+            isWalking = false;
+        }
+
         if (this.getCurrentFrame() == this.attackFrames.size() - 1) {
             this.setCurrentFrame(0);
             this.isAttacking = false;
+            Game.attacking = false;
         }
-
         if (this.getTimeForCurrentFrame() >= this.getFrameTime()) {
             if (isWalking) {
                 this.setCurrentFrame((this.getCurrentFrame() + 1) % walkingFrames.size());
@@ -88,6 +104,7 @@ public class Cyborg extends Enemy {
             }
 
             this.setTimeForCurrentFrame(this.getTimeForCurrentFrame() - this.getFrameTime());
+
         }
 
         move();
