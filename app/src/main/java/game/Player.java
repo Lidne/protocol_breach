@@ -226,7 +226,6 @@ public class Player extends Entity {
             } else {
 
                 canvas.drawBitmap(bitmap, frames.get(getCurrentFrame()), this.destination, p);
-
             }
         }
     }
