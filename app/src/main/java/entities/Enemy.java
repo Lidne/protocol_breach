@@ -82,9 +82,21 @@ public abstract class Enemy extends Entity {
         return stamina;
     }
 
-    public void setStamina(int stamina) {
-        this.stamina = stamina;
-    }
+    public void setStamina(int stamina) {this.stamina = stamina;}
+
+    protected int attackRange;
+
+    public void setAttackRange(int attackRange) {this.attackRange=attackRange;}
+
+    public int getAttackRange() {return attackRange;}
+
+    protected int dmg;
+
+    public void setDmg(int dmg) {this.dmg=dmg;}
+
+    public int getDmg() {return dmg;}
+
+
 
     public void resurrect() {
         this.hp = 100;
@@ -93,5 +105,14 @@ public abstract class Enemy extends Entity {
 
     public void draw(@NonNull Canvas canvas, Paint p) {
         canvas.drawRect(this.destination, p);
+    }
+
+    public void canAttack(Entity entity){
+        if (Math.abs(this.posX-entity.posX)<=getAttackRange()){
+            this.isAttacking=true;
+        }
+        else {
+            this.isWalking=true;
+        }
     }
 }
