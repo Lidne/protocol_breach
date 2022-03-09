@@ -1,16 +1,18 @@
-package game;
+package entities;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import entities.Entity;
+import game.Game;
 
 public class Player extends Entity {
     private int hp;
@@ -27,11 +29,11 @@ public class Player extends Entity {
     private List<Rect> attackFrames; // список с анимациями атаки
     //private List<Rect> attack1Frames;
 
-    public Player(int posX, int posY, int vX, int vY, int frameWidth, int frameHeight, Bitmap bitmap) {
-        super(posX, posY, vX, vY, frameWidth, frameHeight);
+    public Player(int posX, int posY, int width, int height, int vX, int vY, int frameWidth, int frameHeight, Bitmap bitmap) {
+        super(posX, posY, width, height, vX, vY, frameWidth, frameHeight);
         this.setBitmap(bitmap);
         this.hp = 100;
-        isWalking = false;
+        this.isWalking = false;
         this.atkRect = new Rect(posX + (this.getFrameWidth() / 2), posY + (this.getFrameHeight() / 2),
                 posX + (this.getFrameWidth() / 4 * 3),
                 posY + (this.getFrameHeight()));
@@ -42,11 +44,12 @@ public class Player extends Entity {
         this.attackFrames = new ArrayList<Rect>();
         this.hitBox = new Rect(posX + (frameWidth / 2 - 70), posY + 170, posX + (frameWidth / 2 + 70),
                 posY + frameHeight - 1);
+        this.destination = new Rect();
         //this.attack1Frames = new ArrayList<Rect>();
-        isAttacking = false;
-        isDefending = false;
-        isDashing = false;
-        isFalling = false;
+        this.isAttacking = false;
+        this.isDefending = false;
+        this.isDashing = false;
+        this.isFalling = false;
         //this.setPadding(100);
 
         // добавляем фреймы в их списки
@@ -95,34 +98,42 @@ public class Player extends Entity {
         }
         // заготовка для столкновения юнитов
         //if (!colliding) {
+
+
         move(str, agl);
         //}
     }
 
     private void move(int str, int agl) {
-        if (str >= 30 && isWalking) { // если сила наклона меньше 20, то не двигаем перса
-            switch (agl) {
-                case 0:
-                    this.setDirection(0);
-                    this.posX = (int) (this.posX + (this.vX * (str / 100.0)) / 60.0);
-                    break;
-                case 180:
-                    this.setDirection(1);
-                    this.posX = (int) (this.posX - (this.vX * (str / 100.0)) / 60.0);
-                    break;
-            }
-        }
 
         if (this.isFalling) {
             this.posY += this.vY;
         }
+        if (str >= 30 && isWalking) { // если сила наклона меньше 30, то не двигаем перса
+            switch (agl) {
+                case 0:
+                    //if (!isCollidingRight) {
+                    this.setDirection(0);
+                    this.posX = (int) (this.posX + (this.vX * (str / 100.0)) / 60.0);
+                    break;
+                //}
+                case 180:
+                    //if (!isCollidingLeft) {
+                    this.setDirection(1);
+                    this.posX = (int) (this.posX - (this.vX * (str / 100.0)) / 60.0);
+                    break;
+                //}
+            }
+        }
 
-        this.atkRect.set(posX + (this.getFrameWidth() / 2), posY + (this.getFrameHeight() / 2),
-                posX + (this.getFrameWidth() / 4 * 3),
-                posY + this.getFrameHeight());
-        this.destination.set(posX, posY, posX + getFrameWidth(), posY + getFrameHeight());
-        this.hitBox.set(posX + (frameWidth / 2 - 70), posY + 170, posX + (frameWidth / 2 + 70),
-                posY + frameHeight - 1);
+        this.atkRect.set(posX + (this.getFrameWidth() / 2) - 265, posY + (this.getFrameHeight() / 2) - 177,
+                posX + (this.getFrameWidth() / 4 * 3) - 265,
+                posY + this.getFrameHeight() - 177);
+        this.destination.set(posX - 265, posY - 177,
+                posX + getFrameWidth() - 265, posY + getFrameHeight() - 177);
+        //this.hitBox.set(posX + (frameWidth / 2 - 70), posY, posX + (frameWidth / 2 + 70),
+        //        posY + frameHeight - 1);
+        this.hitBox.set(posX, posY, posX + width, posY + height);
     }
 
     private void setDefaultFrames() {
@@ -163,13 +174,19 @@ public class Player extends Entity {
         p.setColor(Color.RED);
         canvas.drawRect(this.atkRect, p);
         p.setColor(Color.GREEN);
-        canvas.drawRect(this.getHitBoxRect(), p);
+        canvas.drawRect(this.hitBox, p);
         if (isWalking) {
             canvas.drawBitmap(bitmap, walkingFrames.get(getCurrentFrame()), this.destination, p);
         } else if (isAttacking) {
             canvas.drawBitmap(bitmap, attackFrames.get(getCurrentFrame()), this.destination, p);
         } else canvas.drawBitmap(bitmap, frames.get(getCurrentFrame()), this.destination, p);
     }
+
+    /*public Rect getNewPos(ArrayList<Enemy> enemies) {
+        for (int i = 0; i < enemies.size(); i++) {
+
+        }
+    }*/
 
     public int getHp() {
         return hp;

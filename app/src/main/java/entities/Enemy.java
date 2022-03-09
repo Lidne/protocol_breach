@@ -1,10 +1,9 @@
-package game;
+package entities;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -20,8 +19,8 @@ public abstract class Enemy extends Entity {
 
     protected int stamina;
 
-    public Enemy(int posX, int posY, int vX, int vY, int frameWidth, int frameHeight, Bitmap bitmap) {
-        super(posX, posY, vX, vY, frameWidth, frameHeight);
+    public Enemy(int posX, int posY, int width, int height, int vX, int vY, int frameWidth, int frameHeight, Bitmap bitmap) {
+        super(posX, posY, width, height, vX, vY, frameWidth, frameHeight);
         this.setBitmap(bitmap);
         this.walkingFrames = new ArrayList<Rect>();
         this.attackFrames = new ArrayList<Rect>();

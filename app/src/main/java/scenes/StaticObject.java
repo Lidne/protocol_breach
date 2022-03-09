@@ -1,4 +1,4 @@
-package game;
+package scenes;
 
 import android.graphics.Bitmap;
 import android.graphics.Rect;

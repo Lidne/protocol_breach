@@ -1,20 +1,17 @@
-package game;
+package entities;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
-
 public class Cyborg extends Enemy {
 
-    public Cyborg(int posX, int posY, int vX, int vY, int frameWidth, int frameHeight, Bitmap bitmap) {
-        super(posX, posY, vX, vY, frameWidth, frameHeight, bitmap);
+    public Cyborg(int posX, int posY, int width, int height, int vX, int vY, int frameWidth, int frameHeight, Bitmap bitmap) {
+        super(posX, posY, width, height, vX, vY, frameWidth, frameHeight, bitmap);
         this.hp = 100;
         this.atk = 30;
         this.isWalking = false;
@@ -93,9 +90,9 @@ public class Cyborg extends Enemy {
         move();
 
         // обновление хитбокса и места отрисовки кадра
-        this.hitBox.set(posX + (frameWidth / 2 - 70), posY + 170, posX + (frameWidth / 2 + 70),
-                posY + frameHeight - 1);
-        this.destination.set(posX, posY, posX + getFrameWidth(), posY + getFrameHeight());
+        this.destination.set(posX - 265, posY - 177,
+                posX + getFrameWidth() - 265, posY + getFrameHeight() - 177);
+        this.hitBox.set(posX, posY, posX + width, posY + height);
     }
 
     private void move() {

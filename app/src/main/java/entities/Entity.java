@@ -1,19 +1,18 @@
-package game;
+package entities;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import scenes.StaticObject;
+
 public class Entity {
     protected int posX; // позиция по x
     protected int posY;  // позиция по y
+    protected int width;
+    protected int height;
     protected int vX; // скорость по x
     protected int vY; // скорость по у
 
@@ -34,9 +33,11 @@ public class Entity {
     protected double timeForCurrentFrame; // время с последней смены кадра
     protected int padding; // отступы от краёв фрейма
 
-    public Entity(int posX, int posY, int vX, int vY, int frameWidth, int frameHeight) {
+    public Entity(int posX, int posY, int width, int height, int vX, int vY, int frameWidth, int frameHeight) {
         this.posX = posX;
         this.posY = posY;
+        this.width = width;
+        this.height = height;
         this.vX = vX;
         this.vY = vY;
         this.timeForCurrentFrame = 0.0;
@@ -47,15 +48,17 @@ public class Entity {
         this.frameHeight = frameHeight;
         this.frameTime = 1000;
         this.destination = new Rect(0, 0, 0, 0);
-        this.hitBox = new Rect(0, 0, 0, 0);
+        this.hitBox = new Rect(posX, posY, posX + width, posY + height);
     }
 
     public void setX(int posX) {
         this.posX = posX;
+        this.hitBox.set(posX, posY, posX + width, posY + height);
     }
 
     public void setY(int posY) {
         this.posY = posY;
+        this.hitBox.set(posX, posY, posX + width, posY + height);
     }
 
     public int getX() {
@@ -87,7 +90,7 @@ public class Entity {
     }
 
     public void setDirection(int direction) {
-        this.direction = direction;
+        this.direction = direction % 2;
     }
 
     public void addFrames(Rect frame, List<Rect> frames) {
@@ -170,11 +173,15 @@ public class Entity {
         return getHitBoxRect().intersect(s.getHitBoxRect());
     }
 
+    public boolean colliding(StaticObject object) {
+        return this.hitBox.intersect(object.getHitBox());
+    }
+
     public boolean intersect(Rect rect) {
         return getHitBoxRect().intersect(rect);
     }
 
-    public void applyGravity(@NonNull List<Floor> floors) {
+    /*public void applyGravity(@NonNull List<Floor> floors) {
         boolean some = true;
         for (int i = 0; i < floors.size(); i++) {
             Floor floor = floors.get(i);
@@ -182,11 +189,27 @@ public class Entity {
         }
         this.isFalling = some;
         //Log.d("TAG", "applyGravity: " + getHitBoxRect().intersect(floor.getHitBox()));
+    }*/
+
+    public void applyGravity(int floor) {
+        isFalling = !(posY + height > floor);
+        //Log.d("TAG", "applyGravity: " + getHitBoxRect().intersect(floor.getHitBox()));
     }
 
-    public void applyGravity(@NonNull Floor floor) {
-        isFalling = !(getHitBoxRect().intersect(floor.getHitBox()) && floor.isColliding());
-        //Log.d("TAG", "applyGravity: " + getHitBoxRect().intersect(floor.getHitBox()));
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     /*private void tickUpdate() {

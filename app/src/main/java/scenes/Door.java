@@ -1,4 +1,4 @@
-package game;
+package scenes;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,7 +16,7 @@ public class Door extends AnimatedObject {
     private boolean isPlayingAnimation;
 
     public Door(int posX, int posY, int width, int height, boolean isColliding, Bitmap bitmap) {
-        super(posX, posY, width, height, bitmap);
+        super(posX, posY, width, height, isColliding, bitmap);
         this.isColliding = isColliding;
         this.frameWidth = 380;
         this.frameHeight = 100;
@@ -27,14 +27,13 @@ public class Door extends AnimatedObject {
 
     @Override
     public void draw(@NonNull Canvas canvas, Paint p) {
-        //Log.d("TAG", "draw: " + currentFrame);
         canvas.drawBitmap(bitmap, frames.get(currentFrame), hitBox, p);
+        Log.d("TAG", "draw: " + bitmap.toString());
     }
 
     @Override
     public void update(int ms) {
         super.update(ms);
-        Log.d("TAG", "state: " + isOpened + " isPLaying: " + isPlayingAnimation);
         if (timeForCurrentFrame >= frameTime) {
             if (isOpened && isPlayingAnimation) {
                 if ((currentFrame + 1) < (frames.size() / 2)) {
@@ -47,7 +46,6 @@ public class Door extends AnimatedObject {
             }
             if (!isOpened && isPlayingAnimation) {
                 if (currentFrame - 1 >= 0) {
-                    Log.d("TAG", "state: " + currentFrame);
                     //currentFrame = (currentFrame + 1) % frames.size();
                     currentFrame--;
                 } else {
@@ -69,7 +67,6 @@ public class Door extends AnimatedObject {
     }
 
     public void change_state() {
-        Log.d("TAG", "change_state: " + isOpened + " " + isPlayingAnimation);
         isPlayingAnimation = true;
 
         //Log.d("TAG", "change_state: " + isPlayingAnimation);

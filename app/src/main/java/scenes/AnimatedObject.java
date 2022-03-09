@@ -1,4 +1,4 @@
-package game;
+package scenes;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,7 +8,9 @@ import android.graphics.Rect;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnimatedObject {
+import scenes.StaticObject;
+
+public class AnimatedObject extends StaticObject {
     protected int posX;
     protected int posY;
     protected int width;
@@ -24,7 +26,9 @@ public class AnimatedObject {
     protected double frameTime; // время на 1 кадр
     protected double timeForCurrentFrame; // время с последней смены кадра
 
-    public AnimatedObject(int posX, int posY, int width, int height, Bitmap bitmap) {
+    public AnimatedObject(int posX, int posY, int width, int height, boolean isColliding, Bitmap bitmap) {
+        super(posX, posY, width, height, isColliding);
+        this.hitBox = new Rect(posX, posY, posX + width, posY + height);
         this.posX = posX;
         this.posY = posY;
         this.width = width;
@@ -36,37 +40,12 @@ public class AnimatedObject {
         this.frameWidth = bitmap.getWidth();
         this.frameHeight = bitmap.getHeight();
         this.frames = new ArrayList<Rect>();
-        this.hitBox = new Rect(posX, posY, posX + width, posY + height);
-    }
-
-    public int getPosX() {
-        return posX;
-    }
-
-    public int getPosY() {
-        return posY;
     }
 
     public void setPos(int x, int y) {
-        this.hitBox.set(x, y, x + width, y + height);
         this.posX = x;
         this.posY = y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
+        this.hitBox.set(posX, posY, posX + width, posY + height);
     }
 
     public Bitmap getBitmap() {
@@ -79,10 +58,6 @@ public class AnimatedObject {
 
     public List<Rect> getFrames() {
         return frames;
-    }
-
-    public Rect getHitBox() {
-        return hitBox;
     }
 
     public void setHitBox(int x, int y, int x1, int y1) {
