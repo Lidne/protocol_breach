@@ -22,12 +22,12 @@ public class Room1 extends FightScene implements SceneLoad {
 
     @Override
     public void loadAssets() {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_knight); // загружаем картинку с фреймами
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_knight1); // загружаем картинку с фреймами
         Bitmap bitmap_d = BitmapFactory.decodeResource(context.getResources(), R.drawable.door);
         //Bitmap bitmap_f = BitmapFactory.decodeResource(context.getResources(), R.drawable.floor_1);
 
         int w = bitmap.getWidth() / 28; // ширина фрейма тестовой анимации
-        int h = bitmap.getHeight() / 13; // длина тестовой анимации
+        int h = bitmap.getHeight() / 26; // длина тестовой анимации
         this.player = new Player(200, 580, 70, 117, 200, 10, w, h, bitmap); // создаём героя
 
         Cyborg en1 = new Cyborg(900, 580, 70, 117, 100, 10, w, h, bitmap); // создаём врага

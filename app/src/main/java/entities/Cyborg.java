@@ -8,6 +8,8 @@ import android.graphics.Rect;
 
 import androidx.annotation.NonNull;
 
+import game.Game;
+
 public class Cyborg extends Enemy {
 
     public Cyborg(int posX, int posY, int width, int height, int vX, int vY, int frameWidth, int frameHeight, Bitmap bitmap) {
@@ -72,12 +74,12 @@ public class Cyborg extends Enemy {
     public void update(int ms) {
         super.update(ms);
 
-        if (this.isWalking != Game.walking && !isAttacking) {
+        /*if (this.isWalking != Game.walking && !isAttacking) {
             this.setCurrentFrame(0);
         }
         if (this.isAttacking != Game.attacking) {
             this.setCurrentFrame(0);
-        }
+        }*/
 
         if (!isAttacking) isWalking = Game.walking;
         isAttacking = Game.attacking;
